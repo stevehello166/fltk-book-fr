@@ -2,7 +2,7 @@
 
 ## Build issues
 
-#### La français n’est pas mon langue de naissance alors s’il vous plaît excuse mes anglisismes
+#### La français n’est pas mon langue de naissance alors s’il vous plaît excuse mes anglisismes.
 
 ### Pourquoi est-ce-que quand je suive les tutoriels, les programmes ne peut pas compiler?
 
@@ -19,16 +19,12 @@ fltk = "^1.4"
 De plus, le fltk-bundled drapeau suppose que tu as déjà curl et tar installé sur votre système ( Pour Windows, il sont disponible dans le Native Tools Command Prompt).
 
 ### Pourquoi est-ce-que Windows ne peut pas trouver CMake dans mon toolchain?
-Si vous construit votre application en utilisent le MSVC toolchain, faire certain que vous exécute votre application en utilisant le Native Tools Command Pronpt, qui  serait apparaître  quand vous entre "native" dans le ‘start menu’, choisis le version qui correspond à votre Rust toolchain (x86 ou x64). Le Native Tools Command Prompt possède tous les variables de environnement correct pour la développement native . [cmake-rs
+Si vous construit votre application en utilisent le MSVC toolchain, faire certain que vous exécute votre application en utilisant le Native Tools Command Pronpt, qui serait apparaître  quand vous entre "native" dans le ‘start menu’, choisis le version qui correspond à votre Rust toolchain (x86 ou x64). Le Native Tools Command Prompt possède tous les variables de environnement correct pour la développement native . [cmake-rs] (https://github.com/alexcrichton/cmake-rs) ou les bindings que vous utilise ne peut pas trouver le Visual Studio 2022 generator, dans ce cas, tu peut essayer le fltk-bundled drapeau, ou utilise ninja via le use-ninja drapeau. Cette méthode besoin l’installation de Ninja (https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages) qui pourrait être installer avec choclatey,Scoop ou manuellement.
 
-### Build fails on windows, why can't CMake find my toolchain?
-If you're building using the MSVC toolchain, make sure you run your build (at least your initial build) using the Native Tools Command Prompt, which should appear once you start typing "native" in the start menu, choose the version corresponding to your installed Rust toolchain (x86 or x64). The Native Tools Command Prompt has all the environment variables set correctly for native development. [cmake-rs](https://github.com/alexcrichton/cmake-rs) which the bindings use might not be able to find the Visual Studio 2022 generator, in which case, you can try to use the fltk-bundled feature, or use ninja via the use-ninja feature. This requires installing [Ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages) which can be installed with Chocolatey, Scoop or manually.
+Si vous construit votre projet pour le toolchain GNU, faire certain que Make est aussi installer, qui habituellement viens installer dans mingw64 toolchain.
 
-If you're building for the GNU toolchain, make sure that Make is also installed, which usually comes installed in mingw64 toolchain.
-
-
-### Build fails on MacOS 11 with an Apple M1 chip, what can I do?
-If you're getting "file too small to be an archive" error, you might be hitting this [issues](https://github.com/rust-lang/cargo/issues/8875) or this [issue](https://github.com/rust-lang/rust/issues/50220). MacOS's native C/C++ toolchain shouldn't have this issue, and can be installed by running `xcode-select --install` or by installing XCode. Make sure the corresponding Rust toolchain (aarch64-apple-darwin) is installed as well. You can uninstall other Rust apple-darwin toolchains or use cargo-lipo instead if you need universal/fat binaries.
+### Le construction du projet ne succède pas sur MacOS 11 avec un M1 chip, que-ce que je peut fait?
+Si vous à l’erreur «Ficher trop petit pour être un archive», tu as peut-être rencontrer un de ces problèmes (https://github.com/rust-lang/cargo/issues/8875) ou (https://github.com/rust-lang/rust/issues/50220). Le toolchain native C/C++ ne devrait pas avoir cette problème. Cette toolchain peut-être installer par courrire `xcode-select –install` ou par installer Xcode. Fait certain que le Rust toolchain qui le correspond (aarch64-apple-darwin) est aussi installer. Tu pourrait enlever les autres apple-darwin toolchains ou au lieu utilise cargo-lipo si vous besoin universel/épaisse binaries.
 
 ### Why do I get a Link error while using the mingw toolchain on windows?
 If the linking fails because of this [issue](https://github.com/rust-lang/rust/issues/47048) with older toolchains, it should work by using the fltk-shared feature (an issue with older compilers). Which would also generate a dynamic library which would need to be deployed with your application.
