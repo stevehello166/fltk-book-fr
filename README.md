@@ -1,4 +1,5 @@
 # fltk-book
+Cette fork est un projet pour traduitre le livre fltk-rs en francais. S'il vous plait excuse mes anglesismes la français est mon deuxième langue.
 
 This is an mdbook for fltk-rs. It can be accessed online using the following link:
 
