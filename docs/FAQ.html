@@ -88,11 +88,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -152,18 +174,21 @@
                     <main>
                         <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <h2 id="build-issues"><a class="header" href="#build-issues">Build issues</a></h2>
-<h3 id="why-does-the-build-fails-when-i-follow-one-of-the-tutorials"><a class="header" href="#why-does-the-build-fails-when-i-follow-one-of-the-tutorials">Why does the build fails when I follow one of the tutorials?</a></h3>
-<p>The first tutorial uses the fltk-bundled feature flag, which is only supported for certain platforms since these are built using the Github Actions CI, namely:</p>
+<h4 id="la-français-nest-pas-mon-langue-de-naissance-alors-sil-vous-plaît-excuse-mes-anglisismes"><a class="header" href="#la-français-nest-pas-mon-langue-de-naissance-alors-sil-vous-plaît-excuse-mes-anglisismes">La français n’est pas mon langue de naissance alors s’il vous plaît excuse mes anglisismes</a></h4>
+<h3 id="pourquoi-est-ce-que-quand-je-suive-les-tutoriels-les-programmes-ne-peut-pas-compiler"><a class="header" href="#pourquoi-est-ce-que-quand-je-suive-les-tutoriels-les-programmes-ne-peut-pas-compiler">Pourquoi est-ce-que quand je suive les tutoriels, les programmes ne peut pas compiler?</a></h3>
+<p>Le premier tutoriel utilise le fltk-bundled drapeau de fonctionnalité , qui est seulement supporté pour certaines plateformes car ils sont compiler en utilisent le Github Actions CI, par example :</p>
 <ul>
-<li>Windows 10 x64 (msvc and gnu).</li>
-<li>MacOS 12 x64 and aarch64.</li>
-<li>Ubuntu 20.04 or later, x64 and aarch64.</li>
+<li>Windows 10 x64(msvc et gnu).</li>
+<li>MacOS 12 x64 et aarch64.</li>
+<li>Ubuntu 20.04 ou plus tard, x64 et aarch64.</li>
 </ul>
-<p>If you're not running one of the aforementioned platforms, you'll have to remove the fltk-bundled feature flag in your Cargo.toml file:</p>
+<p>Si vous n’utilise pas une de ces plateformes, vous devrait enlever le fltk-bundled drapeau de fonctionnalité dans votre Cargo.toml ficher :</p>
 <pre><code class="language-toml">[dependencies]
 fltk = &quot;^1.4&quot;
 </code></pre>
-<p>Furthermore, the fltk-bundled flag assumes you have curl and tar installed (for Windows, they're available in the Native Tools Command Prompt).</p>
+<p>De plus, le fltk-bundled drapeau suppose que tu as déjà curl et tar installé sur votre système ( Pour Windows, il sont disponible dans le Native Tools Command Prompt).</p>
+<h3 id="pourquoi-est-ce-que-windows-ne-peut-pas-trouver-cmake-dans-mon-toolchain"><a class="header" href="#pourquoi-est-ce-que-windows-ne-peut-pas-trouver-cmake-dans-mon-toolchain">Pourquoi est-ce-que Windows ne peut pas trouver CMake dans mon toolchain?</a></h3>
+<p>Si vous construit votre application en utilisent le MSVC toolchain, faire certain que vous exécute votre application en utilisant le Native Tools Command Pronpt, qui  serait apparaître  quand vous entre &quot;native&quot; dans le ‘start menu’, choisis le version qui correspond à votre Rust toolchain (x86 ou x64). Le Native Tools Command Prompt possède tous les variables de environnement correct pour la développement native . [cmake-rs</p>
 <h3 id="build-fails-on-windows-why-cant-cmake-find-my-toolchain"><a class="header" href="#build-fails-on-windows-why-cant-cmake-find-my-toolchain">Build fails on windows, why can't CMake find my toolchain?</a></h3>
 <p>If you're building using the MSVC toolchain, make sure you run your build (at least your initial build) using the Native Tools Command Prompt, which should appear once you start typing &quot;native&quot; in the start menu, choose the version corresponding to your installed Rust toolchain (x86 or x64). The Native Tools Command Prompt has all the environment variables set correctly for native development. <a href="https://github.com/alexcrichton/cmake-rs">cmake-rs</a> which the bindings use might not be able to find the Visual Studio 2022 generator, in which case, you can try to use the fltk-bundled feature, or use ninja via the use-ninja feature. This requires installing <a href="https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages">Ninja</a> which can be installed with Chocolatey, Scoop or manually.</p>
 <p>If you're building for the GNU toolchain, make sure that Make is also installed, which usually comes installed in mingw64 toolchain.</p>
@@ -335,6 +360,22 @@ Also any function sending a string across FFI is checked for interal null bytes.
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

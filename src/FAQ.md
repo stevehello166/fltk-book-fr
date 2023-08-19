@@ -1,19 +1,25 @@
-# FAQ
+﻿# FAQ
 
 ## Build issues
 
-### Why does the build fails when I follow one of the tutorials?
-The first tutorial uses the fltk-bundled feature flag, which is only supported for certain platforms since these are built using the Github Actions CI, namely:
-- Windows 10 x64 (msvc and gnu).
-- MacOS 12 x64 and aarch64.
-- Ubuntu 20.04 or later, x64 and aarch64.
+#### La français n’est pas mon langue de naissance alors s’il vous plaît excuse mes anglisismes
 
-If you're not running one of the aforementioned platforms, you'll have to remove the fltk-bundled feature flag in your Cargo.toml file:
+### Pourquoi est-ce-que quand je suive les tutoriels, les programmes ne peut pas compiler?
+
+Le premier tutoriel utilise le fltk-bundled drapeau de fonctionnalité , qui est seulement supporté pour certaines plateformes car ils sont compiler en utilisent le Github Actions CI, par example :
+- Windows 10 x64(msvc et gnu).
+- MacOS 12 x64 et aarch64.
+- Ubuntu 20.04 ou plus tard, x64 et aarch64.
+
+Si vous n’utilise pas une de ces plateformes, vous devrait enlever le fltk-bundled drapeau de fonctionnalité dans votre Cargo.toml ficher :
 ```toml
 [dependencies]
 fltk = "^1.4"
 ```
-Furthermore, the fltk-bundled flag assumes you have curl and tar installed (for Windows, they're available in the Native Tools Command Prompt).
+De plus, le fltk-bundled drapeau suppose que tu as déjà curl et tar installé sur votre système ( Pour Windows, il sont disponible dans le Native Tools Command Prompt).
+
+### Pourquoi est-ce-que Windows ne peut pas trouver CMake dans mon toolchain?
+Si vous construit votre application en utilisent le MSVC toolchain, faire certain que vous exécute votre application en utilisant le Native Tools Command Pronpt, qui  serait apparaître  quand vous entre "native" dans le ‘start menu’, choisis le version qui correspond à votre Rust toolchain (x86 ou x64). Le Native Tools Command Prompt possède tous les variables de environnement correct pour la développement native . [cmake-rs
 
 ### Build fails on windows, why can't CMake find my toolchain?
 If you're building using the MSVC toolchain, make sure you run your build (at least your initial build) using the Native Tools Command Prompt, which should appear once you start typing "native" in the start menu, choose the version corresponding to your installed Rust toolchain (x86 or x64). The Native Tools Command Prompt has all the environment variables set correctly for native development. [cmake-rs](https://github.com/alexcrichton/cmake-rs) which the bindings use might not be able to find the Visual Studio 2022 generator, in which case, you can try to use the fltk-bundled feature, or use ninja via the use-ninja feature. This requires installing [Ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages) which can be installed with Chocolatey, Scoop or manually.
