@@ -1,10 +1,10 @@
 # Home
 
-Welcome to the [fltk-rs](https://github.com/fltk-rs/fltk-rs) book!
+Bonjour au livre [fltk-rs](https://github.com/fltk-rs/fltk-rs)!
 
 [本書的中文翻譯](https://flatig.vip/fltk-book-zh)
 
-This is an introductory book targeting the [fltk crate](https://crates.io/crates/fltk). Other resources include:
+Ça c'est un livre d'introduction au [fltk crate](https://crates.io/crates/fltk). Les autres resources incluses:
 - [Official Documentation](https://docs.rs/fltk)
 - [Videos](https://github.com/fltk-rs/fltk-rs#tutorials)
 - [Discussions](https://github.com/fltk-rs/fltk-rs/discussions)
